@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: dubbo-provider
+  main:
+    allow-bean-definition-overriding: true
+dubbo:
+  scan:
+    base-packages: com.liang.service
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://192.168.3.129:8848
