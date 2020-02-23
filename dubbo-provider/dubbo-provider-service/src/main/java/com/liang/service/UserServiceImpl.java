@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(Long id) {
         User user = new User();
-        user.setId(1L);
+        user.setId(id);
         user.setUserName("lian");
         user.setPort(port);
         return user;
