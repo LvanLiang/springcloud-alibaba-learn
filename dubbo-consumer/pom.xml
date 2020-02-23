@@ -46,5 +46,13 @@
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-client</artifactId>
         </dependency>
+
+        <!--dubbo高速序列化-->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-serialization-kryo</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
