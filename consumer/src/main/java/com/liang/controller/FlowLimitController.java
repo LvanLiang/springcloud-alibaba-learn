@@ -8,6 +8,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 测试sentinel限流控制
+ *      流控效果：
+ *          1.直接->快速失败(默认流控处理)；直接失败抛出异常，DefaultController来处理
+ *          2.预热->即请求QPS从设置的阈值/冷加载因子(默认3)开始，经过设置的预热时长逐渐升至设置的QPS
+ *          3.排队等待->不拒绝请求，匀速处理
  * @author Liangxp
  * @date 2020/04/23 20:43
  */
@@ -42,6 +46,7 @@ public class FlowLimitController {
      */
     @GetMapping("/testC")
     public String testC() {
+        log.info(Thread.currentThread().getName() + "\t" + "...testC");
         return "------testC";
     }
 
