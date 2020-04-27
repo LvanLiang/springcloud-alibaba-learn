@@ -11,6 +11,6 @@ dubbo:
     port: 20881
     serialization: kryo
   registry:
-    address: nacos://192.168.3.129:8848
+    address: nacos://127.0.0.1:8848
   provider:
     loadbalance: roundrobin

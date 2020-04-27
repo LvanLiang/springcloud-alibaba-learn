@@ -1,13 +1,16 @@
 package com.liang.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * 测试sentinel限流控制，降级策略
+ * 测试sentinel限流控制，降级策略，热点key限流
  *      流控效果：
  *          1.直接->快速失败(默认流控处理)；直接失败抛出异常，DefaultController来处理
  *          2.预热->即请求QPS从设置的阈值/冷加载因子(默认3)开始，经过设置的预热时长逐渐升至设置的QPS
@@ -24,6 +27,10 @@ import java.util.concurrent.TimeUnit;
  *              配置：异常比例0.2，时间窗口=10(单位是秒)
  *              解释：当资源的每秒请求量 >= 5，并且每秒异常总数占通过量的比值20%，资源进入降级状态
  *          3.异常数(DEGRADE_GRADE_EXCEPTION_COUNT):当资源近 1 分钟的异常数目超过阈值之后会进行熔断。注意由于统计时间窗口是分钟级别的，若 timeWindow 小于 60s，则结束熔断状态后仍可能再进入熔断状态。
+ *
+ *      热点key限流： 热点参数限流会统计传入参数中的热点参数，并根据配置的限流阈值与模式，对包含热点参数的资源调用进行限流。
+ *                  热点参数限流可以看做是一种特殊的流量控制，仅对包含热点参数的资源调用生效。
+ *
  * @author Liangxp
  * @date 2020/04/23 20:43
  */
@@ -70,6 +77,21 @@ public class FlowLimitController {
         log.info("testD 测试异常数");
         int age = 10 / 0;
         return "------testD";
+    }
+
+    /**
+     * 测试参数限流
+     */
+    @GetMapping("/testHotKey")
+    @SentinelResource(value = "testHotKey", blockHandler = "detailTestHotKey")
+    public String testHotKey(@RequestParam(value = "name", required = false) String name,
+                             @RequestParam(value = "gender", required = false) String gender) {
+        log.info("热点限流……testHotKey参数：name: {}====gender:{}", name, gender);
+        return "------testHotKey";
+    }
+    public String detailTestHotKey(String name, String gender, BlockException exception){
+        log.info("detailTestHotKey|name:{}，gender:{}", name, gender);
+        return "detail hotkey o(╥﹏╥)o";
     }
 
 }
