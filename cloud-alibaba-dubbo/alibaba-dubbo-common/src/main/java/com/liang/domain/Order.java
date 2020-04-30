@@ -2,6 +2,7 @@ package com.liang.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -9,7 +10,9 @@ import java.math.BigDecimal;
  * @date 2020/4/29 16:41
  */
 @Data
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 3365082841645649920L;
+
     private Long id;
 
     private Long userId;

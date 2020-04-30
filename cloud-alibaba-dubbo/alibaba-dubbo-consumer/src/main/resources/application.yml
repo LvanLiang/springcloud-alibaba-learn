@@ -4,18 +4,27 @@ server:
 dubbo:
   registry:
     # 挂载到 Spring Cloud 注册中心
-    address: spring-cloud://localhost
-  cloud:
-    subscribed-services: sca-provider
+    address: spring-cloud://192.168.11.140:8848
   consumer:
     check: false
+  cloud:
+    subscribed-services: alibaba-dubbo-provider
+  protocol:
+    port: -1
+    serialization: kryo
+  provider:
+    loadbalance: roundrobin
 
 spring:
+  application:
+    name: alibaba-dubbo-consumer
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       # Nacos 服务注册发现
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 192.168.11.140:8848
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
